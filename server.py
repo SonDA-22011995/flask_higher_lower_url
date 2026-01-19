@@ -1,5 +1,4 @@
 from functools import wraps
-from typing import Optional
 
 from flask import Flask, render_template, abort, session
 from ultils_number import (
@@ -8,8 +7,9 @@ from ultils_number import (
     compare_numbers
 )
 
-random_number :Optional[int] = None
+
 app = Flask(__name__)
+app.secret_key = "Sonda@" + '154936480668766032181586949800592793298'
 
 def render_result(func):
     @wraps(func)
@@ -52,8 +52,7 @@ def render_result(func):
 
 @app.route("/")
 def home():
-    global random_number
-    random_number = generate_random_number()
+    session["random_number"] = generate_random_number()
 
     html = "<h1>Guess a number between 0 and 9</h1>"
     html = (html +
@@ -70,6 +69,8 @@ def home():
 def guess(number: str):
     if not is_valid_int_input(number):
         abort(400, description="The number is not valid")
+
+    random_number = session.get("random_number")
     result = compare_numbers(int(number), random_number)
     return result
 
