@@ -11,3 +11,7 @@ serializer = SecureCookieSessionInterface().get_signing_serializer(app)
 data = serializer.loads(cookie_value)
 
 print(data)
+
+# the alternative way to decode a session key
+# import base64
+# base64.urlsafe_b64decode('<session_value_in_browser>===')
